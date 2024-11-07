@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
@@ -9,7 +9,10 @@
         <AssemblyVersion>1.0.13</AssemblyVersion>
         <FileVersion>1.0.13</FileVersion>
         <InvariantGlobalization>true</InvariantGlobalization>
-        <Version>1.0.13</Version>
+        <Version>1.2411.07</Version>
+        <AssemblyName>CCd.$(MSBuildProjectName)</AssemblyName>
+        <Authors>Copycd</Authors>
+        <Company>Heliosen</Company>
     </PropertyGroup>
 
     <ItemGroup>
