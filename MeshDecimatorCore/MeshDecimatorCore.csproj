@@ -1,9 +1,13 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <AssemblyName>CCd.$(MSBuildProjectName)</AssemblyName>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+        <Version>1.2411.07</Version>
+        <Authors>Copycd</Authors>
     </PropertyGroup>
 
 </Project>
