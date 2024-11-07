@@ -5,7 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <AssemblyName>CCd.$(MSBuildProjectName)</AssemblyName>
-        <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+        <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
         <Version>1.2411.07</Version>
         <Authors>Copycd</Authors>
     </PropertyGroup>
