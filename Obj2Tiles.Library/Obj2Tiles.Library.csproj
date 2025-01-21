@@ -6,12 +6,12 @@
         <Nullable>enable</Nullable>
         <AssemblyName>CCd.$(MSBuildProjectName)</AssemblyName>
         <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-        <Version>1.2411.07</Version>
+        <Version>1.2501.21</Version>
         <Authors>Copycd</Authors>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" />
+      <PackageReference Include="SixLabors.ImageSharp" Version="3.1.6" />
     </ItemGroup>
 
 </Project>
