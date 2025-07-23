@@ -16,6 +16,24 @@ namespace Obj2Tiles
     {
         private static async Task Main(string[] args)
         {
+#if DEBUG && false
+            string inputDir = "F:\\진흥원\\국가민속250_청송 송소 고택_뒷간";
+            string outputDir = "F:\\진흥원\\국가민속250_청송 송소 고택_뒷간Split";
+            var objFiles = Directory.GetFiles(inputDir, "*.obj");
+
+            foreach (var objFile in objFiles)
+            {
+                Options options = new Options();
+                options.Input = objFile;
+                options.Output = Path.Combine(outputDir, Path.GetFileNameWithoutExtension(objFile) );
+                options.StopAt = Stage.Splitting;
+                options.LODs = 2;
+                options.Divisions = 4;
+                options.ZSplit = true;
+                await Run(options);
+            }
+            return;
+#endif
             var oResult = await Parser.Default.ParseArguments<Options>(args).WithParsedAsync(Run);
 
             if (oResult.Tag == ParserResultType.NotParsed)
@@ -23,6 +41,7 @@ namespace Obj2Tiles
                 Console.WriteLine("Usage: obj2tiles [options]");
             }
         }
+
 
         private static async Task Run(Options opts)
         {
