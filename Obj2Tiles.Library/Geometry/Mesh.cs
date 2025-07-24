@@ -1,8 +1,9 @@
-﻿using System.Collections.Concurrent;
+﻿using Obj2Tiles.Library.Materials;
+using SixLabors.ImageSharp;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Globalization;
-using Obj2Tiles.Library.Materials;
-using SixLabors.ImageSharp;
+using System.Text;
 
 namespace Obj2Tiles.Library.Geometry;
 
@@ -301,42 +302,56 @@ public class Mesh : IMesh
 
         var materialsPath = Path.ChangeExtension(path, "mtl");
 
-        using var writer = new FormattingStreamWriter(path, CultureInfo.InvariantCulture);
-        
-        writer.Write("o ");
-        writer.WriteLine(string.IsNullOrWhiteSpace(Name) ? DefaultName : Name);
-        writer.WriteLine("mtllib {0}", Path.GetFileName(materialsPath));
-
-        for (var index = 0; index < _vertices.Count; index++)
+        using (var writer = new FormattingStreamWriter(path, CultureInfo.InvariantCulture))
         {
-            var vertex = _vertices[index];
-            writer.Write("v ");
-            writer.Write(vertex.X);
-            writer.Write(" ");
-            writer.Write(vertex.Y);
-            writer.Write(" ");
-            writer.WriteLine(vertex.Z);
+
+            writer.Write("o ");
+            writer.WriteLine(string.IsNullOrWhiteSpace(Name) ? DefaultName : Name);
+
+            writer.WriteLine("mtllib {0}", Path.GetFileName(materialsPath));
+
+            for (var index = 0; index < _vertices.Count; index++)
+            {
+                var vertex = _vertices[index];
+                writer.Write("v ");
+                writer.Write(vertex.X);
+                writer.Write(" ");
+                writer.Write(vertex.Y);
+                writer.Write(" ");
+                writer.WriteLine(vertex.Z);
+            }
+
+            /*
+            for (var index = 0; index < _faces.Count; index++)
+            {
+                var face = _faces[index];
+                writer.WriteLine(face.ToObj());
+            }*/
+
+            var materialFaces = from face in _faces
+                                group face by face.MaterialIndex
+                        into g
+                                select g;
+
+            // NOTE: If there are groups of faces without materials, they must be placed at the beginning
+            foreach (var grp in materialFaces.OrderBy(item => item.Key))
+            {
+                writer.WriteLine($"usemtl {_materials[grp.Key].Name}");
+
+                foreach (var face in grp)
+                    writer.WriteLine(face.ToObj());
+            }
         }
 
-        /*
-        for (var index = 0; index < _faces.Count; index++)
+        var mtlFilePath = Path.ChangeExtension(path, "mtl");
+
+        using (var writer = new FormattingStreamWriter(mtlFilePath, CultureInfo.InvariantCulture))
         {
-            var face = _faces[index];
-            writer.WriteLine(face.ToObj());
-        }*/
-
-        var materialFaces = from face in _faces
-                            group face by face.MaterialIndex
-            into g
-                            select g;
-
-        // NOTE: If there are groups of faces without materials, they must be placed at the beginning
-        foreach (var grp in materialFaces.OrderBy(item => item.Key))
-        {
-            writer.WriteLine($"usemtl {_materials[grp.Key].Name}");
-
-            foreach (var face in grp)
-                writer.WriteLine(face.ToObj());
+            for (var index = 0; index < _materials.Count; index++)
+            {
+                var material = _materials[index];
+                writer.WriteLine(material.ToMtl());
+            }
         }
     }
 
