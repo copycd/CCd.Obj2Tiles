@@ -16,7 +16,10 @@ namespace Obj2Tiles
     {
         private static async Task Main(string[] args)
         {
-#if DEBUG && true
+            string version = "1.2507";
+            Console.WriteLine($"Heliosen Obj2Split {version}");
+
+#if DEBUG && false
             string inputDir = "F:\\진흥원\\국가민속250_청송 송소 고택_뒷간";
             inputDir = "C:\\Users\\copyc\\Downloads\\big";
             string outputDir = $"{inputDir}Split";
