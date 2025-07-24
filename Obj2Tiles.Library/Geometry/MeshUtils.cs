@@ -104,7 +104,8 @@ public class MeshUtils
                         var face = new Face(
                             v1 - 1,
                             v2 - 1,
-                            v3 - 1);
+                            v3 - 1,
+                            materialsDict[currentMaterial]);
 
                         faces.Add(face);
                     }
