@@ -7,7 +7,6 @@ public class FaceT : Face
     public int TextureIndexB;
     public int TextureIndexC;
 
-    public int MaterialIndex;
 
     public override string ToString()
     {
@@ -15,14 +14,12 @@ public class FaceT : Face
     }
 
     public FaceT(int indexA, int indexB, int indexC, int textureIndexA, int textureIndexB,
-        int textureIndexC, int materialIndex) : base(indexA, indexB, indexC)
+        int textureIndexC, int materialIndex) : base(indexA, indexB, indexC, materialIndex )
     {
 
         TextureIndexA = textureIndexA;
         TextureIndexB = textureIndexB;
         TextureIndexC = textureIndexC;
-
-        MaterialIndex = materialIndex;
     }
 
     public override string ToObj()

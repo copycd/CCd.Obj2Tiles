@@ -140,7 +140,7 @@ public class MeshUtils
         
         return textureVertices.Count != 0
             ? new MeshT(vertices, textureVertices, facesT, materials)
-            : new Mesh(vertices, faces);
+            : new Mesh(vertices, faces, materials);
     }
 
     #region Splitters

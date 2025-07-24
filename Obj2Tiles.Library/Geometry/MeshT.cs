@@ -32,9 +32,11 @@ public class MeshT : IMesh
         IEnumerable<FaceT> faces, IEnumerable<Material> materials)
     {
         _vertices = [..vertices];
-        _textureVertices = [..textureVertices];
+        if(textureVertices != null)
+            _textureVertices = [..textureVertices];
         _faces = [..faces];
-        _materials = [..materials];
+        if(materials != null)
+            _materials = [..materials];
     }
 
     public int Split(IVertexUtils utils, double q, out IMesh left,

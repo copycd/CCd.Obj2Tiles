@@ -16,9 +16,10 @@ namespace Obj2Tiles
     {
         private static async Task Main(string[] args)
         {
-#if DEBUG && false
+#if DEBUG && true
             string inputDir = "F:\\진흥원\\국가민속250_청송 송소 고택_뒷간";
-            string outputDir = "F:\\진흥원\\국가민속250_청송 송소 고택_뒷간Split";
+            inputDir = "C:\\Users\\copyc\\Downloads\\big";
+            string outputDir = $"{inputDir}Split";
             var objFiles = Directory.GetFiles(inputDir, "*.obj");
 
             foreach (var objFile in objFiles)
@@ -27,9 +28,10 @@ namespace Obj2Tiles
                 options.Input = objFile;
                 options.Output = Path.Combine(outputDir, Path.GetFileNameWithoutExtension(objFile) );
                 options.StopAt = Stage.Splitting;
+                // 현재 버그가 있어서, lod를 안하면, mtl이 안생김.
                 options.LODs = 2;
                 options.Divisions = 4;
-                options.ZSplit = true;
+                options.ZSplit = false;
                 await Run(options);
             }
             return;
