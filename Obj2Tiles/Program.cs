@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.Reflection;
+﻿using System.Diagnostics;
 using CommandLine;
-using CommandLine.Text;
 using Obj2Tiles.Common;
-using Obj2Tiles.Library;
-using Obj2Tiles.Library.Geometry;
 using Obj2Tiles.Stages;
 using Obj2Tiles.Stages.Model;
 
