@@ -13,6 +13,7 @@
     <IsPackable>true</IsPackable>
     <TargetFramework>net9.0</TargetFramework>
     <LangVersion>10</LangVersion>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Source'">

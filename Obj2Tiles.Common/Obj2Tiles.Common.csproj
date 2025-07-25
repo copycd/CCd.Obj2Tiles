@@ -8,6 +8,7 @@
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Version>1.2501.21</Version>
 		<Authors>Copycd</Authors>
+		<Platforms>AnyCPU;x64</Platforms>
 	</PropertyGroup>
 
     <ItemGroup>
