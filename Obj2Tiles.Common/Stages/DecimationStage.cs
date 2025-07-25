@@ -2,6 +2,7 @@
 using MeshDecimatorCore;
 using MeshDecimatorCore.Algorithms;
 using MeshDecimatorCore.Math;
+using Obj2Tiles.Common;
 using Obj2Tiles.Stages.Model;
 using Mesh = MeshDecimatorCore.Mesh;
 

@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Reflection;
 using CommandLine;
 using CommandLine.Text;
+using Obj2Tiles.Common;
 using Obj2Tiles.Library;
 using Obj2Tiles.Library.Geometry;
 using Obj2Tiles.Stages;

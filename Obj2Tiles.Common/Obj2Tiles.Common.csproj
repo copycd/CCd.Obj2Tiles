@@ -4,6 +4,20 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-    </PropertyGroup>
+		<AssemblyName>CCd.$(MSBuildProjectName)</AssemblyName>
+		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+		<Version>1.2501.21</Version>
+		<Authors>Copycd</Authors>
+	</PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="CommandLineParser" Version="2.9.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MeshDecimatorCore\MeshDecimatorCore.csproj" />
+      <ProjectReference Include="..\Obj2Gltf\Obj2Gltf.csproj" />
+      <ProjectReference Include="..\Obj2Tiles.Library\Obj2Tiles.Library.csproj" />
+    </ItemGroup>
 
 </Project>

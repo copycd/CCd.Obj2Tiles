@@ -4,7 +4,7 @@ using Obj2Tiles.Stages.Model;
 using Obj2Tiles.Tiles;
 using SilentWave.Obj2Gltf;
 
-namespace Obj2Tiles;
+namespace Obj2Tiles.Common;
 
 public static class Utils
 {

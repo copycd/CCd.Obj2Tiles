@@ -1,7 +1,7 @@
 using System.Text.Json.Serialization;
 using CommandLine;
 
-namespace Obj2Tiles;
+namespace Obj2Tiles.Common;
 
 public sealed class Options
 {
