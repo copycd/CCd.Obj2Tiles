@@ -402,7 +402,8 @@ public class MeshT : IMesh
             sw.Restart();
 
             Debug.WriteLine("Assembling faces clusters");
-            var clusters = GetFacesClusters(facesIndexes, facesMapper);
+            var clusters = GetFacesClustersFromGPT(facesIndexes, facesMapper);
+            var clustersCheck = GetFacesClusters_Original(facesIndexes, facesMapper);
             Debug.WriteLine("Done in " + sw.ElapsedMilliseconds + "ms");
             sw.Restart();
 
@@ -775,7 +776,50 @@ public class MeshT : IMesh
         return area;
     }
 
-    private static List<List<int>> GetFacesClusters(IEnumerable<int> facesIndexes,
+    private static List<List<int>> GetFacesClustersFromGPT(IEnumerable<int> facesIndexes,
+        IReadOnlyDictionary<int, List<int>> facesMapper)
+    {
+        var clusters = new List<List<int>>();
+        var remainingFacesSet = new HashSet<int>(facesIndexes);
+        var visited = new HashSet<int>();
+
+        foreach (var startFace in facesIndexes)
+        {
+            if (!remainingFacesSet.Contains(startFace))
+                continue;
+
+            var cluster = new List<int>();
+            var queue = new Queue<int>();
+            queue.Enqueue(startFace);
+            visited.Add(startFace);
+            remainingFacesSet.Remove(startFace);
+
+            while (queue.Count > 0)
+            {
+                int face = queue.Dequeue();
+                cluster.Add(face);
+
+                if (!facesMapper.TryGetValue(face, out var neighbors))
+                    continue;
+
+                foreach (var neighbor in neighbors)
+                {
+                    if (visited.Contains(neighbor)) continue;
+
+                    visited.Add(neighbor);
+                    remainingFacesSet.Remove(neighbor);
+                    queue.Enqueue(neighbor);
+                }
+            }
+
+            clusters.Add(cluster);
+        }
+
+        return clusters;
+    }
+
+
+    private static List<List<int>> GetFacesClusters_Original(IEnumerable<int> facesIndexes,
         IReadOnlyDictionary<int, List<int>> facesMapper)
     {
 

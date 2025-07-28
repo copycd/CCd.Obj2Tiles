@@ -156,8 +156,10 @@ public class MeshUtils
 
         var center = bounds.Center;
         int count = 0;
+        // 제한크기의 80~90%수준선까지는 분할을 허용함.
+        double allowRatio = 1.7;
         // x축분할.
-        if (bounds.Width >= limitLength * 2 )
+        if (bounds.Width >= limitLength * allowRatio)
         {
             count = mesh.Split(xutils3, center.X, out var left, out var right);
             var xbounds = bounds.Split(Axis.X);
@@ -169,7 +171,7 @@ public class MeshUtils
             count += tasks.Sum(t => t.Result);
         }
         // y축분할.
-        else if (bounds.Height >= limitLength * 2)
+        else if (bounds.Height >= limitLength * allowRatio)
         {
             count = mesh.Split(yutils3, center.Y, out var left, out var right);
             var xbounds = bounds.Split(Axis.Y);
@@ -181,7 +183,7 @@ public class MeshUtils
             count += tasks.Sum(t => t.Result);
         }
         // z축분할.
-        else if (splitZ && bounds.Depth >= limitLength * 2)
+        else if (splitZ && bounds.Depth >= limitLength * allowRatio)
         {
             count = mesh.Split(zutils3, center.Z, out var left, out var right);
             var xbounds = bounds.Split(Axis.Z);
