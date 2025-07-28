@@ -157,7 +157,7 @@ public class MeshUtils
         var center = bounds.Center;
         int count = 0;
         // 제한크기의 80~90%수준선까지는 분할을 허용함.
-        double allowRatio = 1.7;
+        double allowRatio = 1.6;
         // x축분할.
         if (bounds.Width >= limitLength * allowRatio)
         {
