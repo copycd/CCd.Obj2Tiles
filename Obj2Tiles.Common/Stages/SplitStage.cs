@@ -104,6 +104,12 @@ public static partial class StagesFacade
         sw.Restart();
 
         var ms = meshes.ToArray();
+        // 전체 FaceCount
+        int totalFaceCount = 0;
+        for (var index = 0; index < ms.Length; index++)
+            totalFaceCount += ms[index].FacesCount;
+
+        int progressFaceCount = 0;
         for (var index = 0; index < ms.Length; index++)
         {
             var m = ms[index];
@@ -113,7 +119,9 @@ public static partial class StagesFacade
 
             var filePath = Path.Combine(destPath, $"{m.Name}.obj");
             m.WriteObj(filePath);
-            double percent = (index + 1.0) / ms.Length;
+
+            progressFaceCount += m.FacesCount;
+            double percent = progressFaceCount / totalFaceCount;
             Console.WriteLine($"writing splated {sourceFileName} ... {(percent * 100):F2}%");
 
             tilesBounds.Add(m.Name, m.Bounds);
