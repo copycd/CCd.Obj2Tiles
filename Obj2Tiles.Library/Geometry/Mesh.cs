@@ -1,9 +1,6 @@
 ﻿using Obj2Tiles.Library.Materials;
 using SixLabors.ImageSharp;
-using System.Collections.Concurrent;
-using System.Diagnostics;
 using System.Globalization;
-using System.Text;
 
 namespace Obj2Tiles.Library.Geometry;
 

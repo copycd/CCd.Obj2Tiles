@@ -14,8 +14,8 @@ public sealed class Options
     [Option('s', "stage", Required = false, HelpText = "Stage to stop at (Decimation, Splitting, Tiling)", Default = Stage.Tiling)]
     public Stage StopAt { get; set; }
 
-    [Option('d', "divisions", Required = false, HelpText = "How many tiles divisions", Default = 2)]
-    public int Divisions { get; set; }
+    [Option('d', "limitLength", Required = false, HelpText = "How many tiles divisions", Default = 10)]
+    public double LimitLength { get; set; }
     
     [Option('z', "zsplit", Required = false, HelpText = "Splits along z-axis too", Default = false)]
     public bool ZSplit { get; set; }    

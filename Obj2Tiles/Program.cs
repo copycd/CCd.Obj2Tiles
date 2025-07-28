@@ -10,12 +10,12 @@ namespace Obj2Tiles
     {
         private static async Task Main(string[] args)
         {
-            string version = "1.2507";
+            string version = "1.2507.28";
             Console.WriteLine($"Heliosen Obj2Split {version}");
 
 #if DEBUG && false
             string inputDir = "F:\\진흥원\\국가민속250_청송 송소 고택_뒷간";
-            inputDir = "F:\\이새롬\\new_0724_점자";
+            //inputDir = "F:\\이새롬\\test";
             string outputDir = $"{inputDir}Split";
             var objFiles = Directory.GetFiles(inputDir, "*.obj");
 
@@ -26,8 +26,8 @@ namespace Obj2Tiles
                 options.Output = Path.Combine(outputDir, Path.GetFileNameWithoutExtension(objFile) );
                 options.StopAt = Stage.Splitting;
                 options.LODs = 1;
-                options.Divisions = 6;
-                options.ZSplit = false;
+                options.LimitLength = 1;
+                options.ZSplit = true;
                 await Run(options);
             }
             return;
@@ -84,37 +84,16 @@ namespace Obj2Tiles
 
                 Console.WriteLine();
                 Console.WriteLine(
-                    $" => Splitting stage with {opts.Divisions} divisions {(opts.ZSplit ? "and Z-split" : "")}");
+                    $" => Splitting stage with {opts.LimitLength} divisions {(opts.ZSplit ? "and Z-split" : "")}");
 
                 destFolderSplit = opts.StopAt == Stage.Splitting
                     ? opts.Output
                     : createTempFolder($"{pipelineId}-obj2tiles-split");
 
-                var boundsMapper = await StagesFacade.Split(decimateRes.DestFiles, destFolderSplit, opts.Divisions,
+                var boundsMapper = await StagesFacade.Split(decimateRes.DestFiles, destFolderSplit, opts.LimitLength,
                     opts.ZSplit, decimateRes.Bounds, opts.KeepOriginalTextures);
 
                 Console.WriteLine(" ?> Splitting stage done in {0}", sw.Elapsed);
-
-                if (opts.StopAt == Stage.Splitting)
-                    return;
-
-                var gpsCoords = opts.Latitude != null && opts.Longitude != null
-                    ? new GpsCoords(opts.Latitude.Value, opts.Longitude.Value, opts.Altitude, opts.Scale, opts.YUpToZUp)
-                    : null;
-
-                Console.WriteLine();
-                Console.WriteLine($" => Tiling stage {(gpsCoords != null ? $"with GPS coords {gpsCoords}" : "")}");
-
-                var baseError = opts.BaseError;
-
-                Console.WriteLine();
-                Console.WriteLine($" => Tiling stage with baseError {baseError}");
-
-                sw.Restart();
-
-                StagesFacade.Tile(destFolderSplit, opts.Output, opts.LODs, opts.BaseError, boundsMapper, gpsCoords);
-
-                Console.WriteLine(" ?> Tiling stage done in {0}", sw.Elapsed);
             }
             catch (Exception ex)
             {
@@ -180,7 +159,7 @@ namespace Obj2Tiles
                 return false;
             }
 
-            if (opts.Divisions < 0)
+            if (opts.LimitLength < 0)
             {
                 Console.WriteLine(" !> Divisions must be non-negative");
                 return false;

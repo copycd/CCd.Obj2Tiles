@@ -7,22 +7,22 @@ namespace Obj2Tiles.Stages;
 
 public static partial class StagesFacade
 {
-    public static async Task<Dictionary<string, Box3>[]> Split(string[] sourceFiles, string destFolder, int divisions,
+    public static async Task<Dictionary<string, Box3>[]> Split(string[] sourceLODFiles, string destFolder, double limitLength,
         bool zsplit, Box3 bounds, bool keepOriginalTextures = false)
     {
       
         var tasks = new List<Task<Dictionary<string, Box3>>>();
 
-        for (var index = 0; index < sourceFiles.Length; index++)
+        for (var index = 0; index < sourceLODFiles.Length; index++)
         {
-            var file = sourceFiles[index];
+            var file = sourceLODFiles[index];
             var dest = Path.Combine(destFolder, "LOD-" + index);
             
             // We compress textures except the first one (the original one)
             var textureStrategy = keepOriginalTextures ? TexturesStrategy.KeepOriginal :
                 index == 0 ? TexturesStrategy.Repack : TexturesStrategy.RepackCompressed;
 
-            var splitTask = Split(file, dest, divisions, zsplit, bounds, textureStrategy);
+            var splitTask = Split(file, dest, limitLength, zsplit, bounds, textureStrategy);
 
             tasks.Add(splitTask);
         }
@@ -32,7 +32,7 @@ public static partial class StagesFacade
         return tasks.Select(task => task.Result).ToArray();
     }
 
-    public static async Task<Dictionary<string, Box3>> Split(string sourcePath, string destPath, int divisions,
+    public static async Task<Dictionary<string, Box3>> Split(string sourcePath, string destPath, double limitLength,
         bool zSplit = false,
         Box3? bounds = null,
         TexturesStrategy textureStrategy = TexturesStrategy.Repack,
@@ -51,7 +51,7 @@ public static partial class StagesFacade
         Console.WriteLine(
             $" ?> Loaded {mesh.VertexCount} vertices, {mesh.FacesCount} faces in {sw.ElapsedMilliseconds}ms");
 
-        if (divisions == 0)
+        if (limitLength == 0)
         {
             Console.WriteLine(" -> Skipping split stage, just compressing textures and cleaning up the mesh");
 
@@ -65,7 +65,7 @@ public static partial class StagesFacade
         }
                 
         Console.WriteLine(
-            $" -> Splitting with a depth of {divisions}{(zSplit ? " with z-split" : "")}");
+            $" -> Splitting with a depth of {limitLength}{(zSplit ? " with z-split" : "")}");
 
         var meshes = new ConcurrentBag<IMesh>();
 
@@ -75,12 +75,12 @@ public static partial class StagesFacade
 
         if (bounds != null)
         {
-            count = zSplit
-                ? await MeshUtils.RecurseSplitXYZ(mesh, divisions, bounds, meshes)
-                : await MeshUtils.RecurseSplitXY(mesh, divisions, bounds, meshes);
+            count = await MeshUtils.RecurseSplitXY(mesh, limitLength, bounds, zSplit, meshes);
         }
         else
         {
+            throw new ArgumentOutOfRangeException(nameof(splitPointStrategy));
+            /*
             Func<IMesh, Vertex3> getSplitPoint = splitPointStrategy switch
             {
                 SplitPointStrategy.AbsoluteCenter => m => m.Bounds.Center,
@@ -89,8 +89,8 @@ public static partial class StagesFacade
             };
 
             count = zSplit
-                ? await MeshUtils.RecurseSplitXYZ(mesh, divisions, getSplitPoint, meshes)
-                : await MeshUtils.RecurseSplitXY(mesh, divisions, getSplitPoint, meshes);
+                ? await MeshUtils.RecurseSplitXYZ(mesh, limitLength, getSplitPoint, meshes)
+                : await MeshUtils.RecurseSplitXY(mesh, limitLength, getSplitPoint, meshes);*/
         }
 
         sw.Stop();
@@ -110,7 +110,9 @@ public static partial class StagesFacade
             if (m is MeshT t)
                 t.TexturesStrategy = textureStrategy;
 
-            m.WriteObj(Path.Combine(destPath, $"{m.Name}.obj"));
+            var filePath = Path.Combine(destPath, $"{m.Name}.obj");
+            Console.WriteLine($"writting modelfile: {filePath}");
+            m.WriteObj(filePath);
 
             tilesBounds.Add(m.Name, m.Bounds);
         }

@@ -105,6 +105,23 @@ namespace Obj2Tiles.Library.Geometry
             };
         }
 
+
+        public double getShortLength( bool includeZ )
+        {
+            double min = Math.Min(Width, Height);
+            if (includeZ)
+                return Math.Min(min, Depth);
+            return min;
+        }
+
+
+        public double getLongLength(bool includeZ)
+        {
+            double max = Math.Max(Width, Height);
+            if (includeZ)
+                return Math.Max(max, Depth);
+            return max;
+        }
     }
 
 }
