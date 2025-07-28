@@ -44,6 +44,7 @@ public static partial class StagesFacade
         Directory.CreateDirectory(destPath);
         
         Console.WriteLine($" -> Loading OBJ file \"{sourcePath}\"");
+        var sourceFileName = Path.GetFileName(sourcePath);
 
         sw.Start();
         var mesh = MeshUtils.LoadMesh(sourcePath, out var deps);
@@ -113,7 +114,7 @@ public static partial class StagesFacade
             var filePath = Path.Combine(destPath, $"{m.Name}.obj");
             m.WriteObj(filePath);
             double percent = (index + 1.0) / ms.Length;
-            Console.WriteLine($"writing modelfile... {(percent * 100):F2}%");
+            Console.WriteLine($"writing splated {sourceFileName} ... {(percent * 100):F2}%");
 
             tilesBounds.Add(m.Name, m.Bounds);
         }
