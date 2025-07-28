@@ -111,8 +111,9 @@ public static partial class StagesFacade
                 t.TexturesStrategy = textureStrategy;
 
             var filePath = Path.Combine(destPath, $"{m.Name}.obj");
-            Console.WriteLine($"writting modelfile: {filePath}");
             m.WriteObj(filePath);
+            double percent = (index + 1.0) / ms.Length;
+            Console.WriteLine($"writing modelfile... {(percent * 100):F2}%");
 
             tilesBounds.Add(m.Name, m.Bounds);
         }
