@@ -105,11 +105,11 @@ public static partial class StagesFacade
 
         var ms = meshes.ToArray();
         // 전체 FaceCount
-        int totalFaceCount = 0;
+        double totalFaceCount = 0;
         for (var index = 0; index < ms.Length; index++)
             totalFaceCount += ms[index].FacesCount;
 
-        int progressFaceCount = 0;
+        double progressFaceCount = 0;
         for (var index = 0; index < ms.Length; index++)
         {
             var m = ms[index];
